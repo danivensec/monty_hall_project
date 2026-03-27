@@ -1,6 +1,6 @@
 import random as rand 
 
-def monty_game_switch (games, switch, stay): 
+def monty_game_PARTONE (games, switch, stay): 
     global goatCount
     global carCount
     global goatCount_stay
@@ -65,4 +65,4 @@ def monty_game_switch (games, switch, stay):
 
 games= 10000
 
-monty_game_switch(games,None, None)
+monty_game_PARTONE(games,None, None)
