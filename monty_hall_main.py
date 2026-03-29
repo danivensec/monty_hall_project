@@ -55,7 +55,7 @@ def monty_game_PART_ONE (games, switch, stay):
     stay_win_probability = (carCount_stay/stay_games)*100
 
 
-    print("The results of a 10000 simulation with 3 doors (traditional Monty Hall simulation):")
+    print(f"The results of a {games} simulation with 3 doors (traditional Monty Hall simulation):")
     print("The probabilty of switching is ", switch_win_probability, "%")
     print("The probabilty of staying is ", stay_win_probability, "%\n")
 
@@ -110,7 +110,7 @@ def monty_game_PART_TWO(games, switch, stay):
     stay_win_probability = (carCount_stay/stay_games)*100
 
 
-    print("The results of a 10000 simulation with 10 doors and the host open 8 doors:")
+    print(f"The results of a {games} simulation with 10 doors and the host open 8 doors:")
     print("The probabilty of switching is ",switch_win_probability,"%")
     print("The probabilty of staying is ",stay_win_probability, "%\n")
 
@@ -166,14 +166,72 @@ def monty_game_PART_THREE(games, switch, stay):
     switch_win_probability = (carCount_switch/switch_games)*100
     stay_win_probability = (carCount_stay/stay_games)*100
 
-    
-
-    print("The results of a 10000 simulation with 10 doors but the host only opens one door:")
+    print(f"The results of a {games} simulation with 10 doors but the host only opens one")
     print("The probabilty of switching is ",switch_win_probability,"%")
     print("The probabilty of staying is ",stay_win_probability,"%\n")
 
-   
 
+# Part 4: imperfect host, 20% chance host opens random door
+def monty_game_PART_FOUR(games, switch, stay):
+    carCount_stay = 0
+    carCount_switch = 0
+    stay_games = 0
+    switch_games = 0
+    prize_revealed = 0
+
+    for i in range(games):
+        doors = [0, 0, 0]  # 0 = goat
+
+        car = rand.randint(0, 2) #place the car randomly
+        doors[car] = 1
+
+        first_choice = rand.randint(0, 2)
+
+        other_doors= [x for x in range(3) if x != first_choice]
+
+        # 20% chance the host opend a random door
+        if rand.random() < 0.2:
+            monty_choice = rand.choice(other_doors)  #imperfect. rand door
+
+        else:
+            goat_doors = [x for x in other_doors if doors[x] == 0]
+            monty_choice = rand.choice(goat_doors)  # perfect, always a goat
+
+        #chance the host reveals the car
+        if doors[monty_choice] == 1:
+            prize_revealed +=1
+            continue  # skip to next game
+
+
+        #randomly choose to switch or stay
+        switch = rand.choice ([True, False])
+        if switch == True:
+            stay = False
+        else:
+            stay = True
+
+        if switch == True:
+            switch_games += 1
+            #choose remaining doors  ( not the first door, and not opened by host)
+            switch_choice = next(x for x in range(3)  if x != first_choice and x != monty_choice)
+            if doors[switch_choice] == 1: #check if switch = car
+                carCount_switch += 1
+
+        if stay == True:
+            stay_games += 1
+            if doors[first_choice] == 1: #check if og door has the car
+                carCount_stay += 1
+
+    #percentage conversions  wins/attempts * 1hunnid
+    switch_win_probability = (carCount_switch / switch_games) * 100
+    stay_win_probability = (carCount_stay / stay_games) * 100
+    reveal_rate = (prize_revealed / games) * 100
+
+
+    print(f"The results of a {games} simulation with an imperfect host (20% random open):")
+    print("The probability of switching is", round(switch_win_probability, 2), "%")
+    print("The probability of staying is", round(stay_win_probability, 2), "%")
+    print("The host accidentally revealed the car in", round(reveal_rate, 2), "% of rounds (those rounds were skipped)\n")
 
 
 
@@ -186,3 +244,5 @@ monty_game_PART_ONE(games,default_bool, default_bool)
 monty_game_PART_TWO(games,default_bool, default_bool)
 
 monty_game_PART_THREE(games,default_bool, default_bool)
+
+monty_game_PART_FOUR(games, default_bool, default_bool)
