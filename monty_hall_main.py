@@ -172,8 +172,79 @@ def monty_game_PART_THREE(games, switch, stay):
     print("The probabilty of switching is ",switch_win_probability,"%")
     print("The probabilty of staying is ",stay_win_probability,"%\n")
 
-   
 
+
+   
+# Part 4: Imperfect Host #temp
+
+def monty_game_PART_FOUR(games, switch, stay):
+    carCount_stay = 0
+    carCount_switch = 0
+    stay_games = 0
+    switch_games = 0
+
+    for i in range(games):
+        doors = [0, 0, 0]
+
+        # randomly place the car
+        car = rand.randint(0, 2)
+        doors[car] = 1
+
+        # player's first choice
+        first_choice = rand.randint(0, 2)
+
+        # with probability 0.2, host is imperfect and opens a random remaining door
+        host_imperfect = rand.random() < 0.2
+
+        if host_imperfect:
+            possible_open = [x for x in range(3) if x != first_choice]
+            monty_choice = rand.choice(possible_open)
+
+            # if the host reveals the car, that round is spoiled
+            # we skip it because the normal stay/switch decision no longer happens
+            if doors[monty_choice] == 1:
+                continue
+
+        
+        else:
+            # normal Monty behavior: open a goat door that is not the player's choice
+            
+            monty_open = [x for x in range(3) if x != first_choice and doors[x] == 0]
+            monty_choice = rand.choice(monty_open)
+
+
+        
+        # randomly choosing whether this trial is stay or switch
+        switch = rand.choice([True, False])
+        if switch == True:
+            stay = False
+        else:
+            stay = True
+
+        # switch strategy
+        if switch == True:
+            switch_games += 1
+            switch_choice = next(x for x in range(3) if x != first_choice and x != monty_choice)
+
+            if doors[switch_choice] == 1:
+                carCount_switch += 1
+
+        # stay strategy
+        if stay == True:
+            stay_games += 1
+            if doors[first_choice] == 1:
+                carCount_stay += 1
+
+
+    
+    switch_win_probability = (carCount_switch / switch_games) * 100
+    stay_win_probability = (carCount_stay / stay_games) * 100
+
+
+    
+    print("The results of a", games, "simulation with an imperfect host:")
+    print("The probabilty of switching is ", switch_win_probability, "%")
+    print("The probabilty of staying is ", stay_win_probability, "%\n")
 
 
 
@@ -186,3 +257,7 @@ monty_game_PART_ONE(games,default_bool, default_bool)
 monty_game_PART_TWO(games,default_bool, default_bool)
 
 monty_game_PART_THREE(games,default_bool, default_bool)
+
+monty_game_PART_FOUR(games, default_bool, default_bool)
+
+
