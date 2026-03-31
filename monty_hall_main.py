@@ -231,7 +231,7 @@ def monty_game_PART_FOUR(games):
 
     valid_games = games - spoiled_games
 
-     if valid_games == 0:
+    if valid_games == 0:
         print("No valid games were completed.")
         return
 
@@ -252,15 +252,16 @@ def monty_game_PART_FOUR(games):
 
 
     
-    switch_win_probability = (carCount_switch / games) * 100
-    stay_win_probability = (carCount_stay / games) * 100
+    switch_win_probability = (carCount_switch / valid_games) * 100
+    stay_win_probability = (carCount_stay / valid_games) * 100
 
 
     
     print("The results of a", games, "simulation with an imperfect host:")
    # print("The probabilty of switching is ", switch_win_probability, "%")
    # print("The probabilty of staying is ", stay_win_probability, "%\n")
-
+    print("Spoiled games:", spoiled_games)
+    print("Valid games:", valid_games)
     print("Win rate when switching is", switch_win_probability, "%")
     print("Win rate when staying is", stay_win_probability, "%\n")
 
