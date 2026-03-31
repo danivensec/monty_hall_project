@@ -242,10 +242,11 @@ def monty_game_PART_FOUR(games):
 
     
     print("The results of a", games, "simulation with an imperfect host:")
-    print("The probabilty of switching is ", switch_win_probability, "%")
-    print("The probabilty of staying is ", stay_win_probability, "%\n")
+   # print("The probabilty of switching is ", switch_win_probability, "%")
+   # print("The probabilty of staying is ", stay_win_probability, "%\n")
 
-
+    print("Win rate when switching is", switch_win_probability, "%")
+    print("Win rate when staying is", stay_win_probability, "%\n")
 
 
 
