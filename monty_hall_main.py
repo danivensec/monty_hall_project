@@ -177,11 +177,12 @@ def monty_game_PART_THREE(games, switch, stay):
    
 # Part 4: Imperfect Host #temp
 
-def monty_game_PART_FOUR(games, switch, stay):
+#def monty_game_PART_FOUR(games, switch, stay):
+def monty_game_PART_FOUR(games):
     carCount_stay = 0
     carCount_switch = 0
-    stay_games = 0
-    switch_games = 0
+    #stay_games = 0
+    #switch_games = 0
 
     for i in range(games):
         doors = [0, 0, 0]
@@ -193,7 +194,7 @@ def monty_game_PART_FOUR(games, switch, stay):
         # player's first choice
         first_choice = rand.randint(0, 2)
 
-        # with probability 0.2, host is imperfect and opens a random remaining door
+        # determine if host is imperfect 
         host_imperfect = rand.random() < 0.2
 
         if host_imperfect:
@@ -202,43 +203,41 @@ def monty_game_PART_FOUR(games, switch, stay):
 
             # if the host reveals the car, that round is spoiled
             # we skip it because the normal stay/switch decision no longer happens
-            if doors[monty_choice] == 1:
-                continue
+            #if doors[monty_choice] == 1:
+              #  continue
 
         
         else:
-            # normal Monty behavior: open a goat door that is not the player's choice
+            # normal Monty behavior (open always goat door)
             
             monty_open = [x for x in range(3) if x != first_choice and doors[x] == 0]
             monty_choice = rand.choice(monty_open)
 
+        if doors[first_choice] == 1:  # stay
+            carCount_stay += 1
 
-        
-        # randomly choosing whether this trial is stay or switch
-        switch = rand.choice([True, False])
-        if switch == True:
-            stay = False
-        else:
-            stay = True
+        if doors[monty_choice] == 1: #switch 
+            continue
+
+        switch_choice = next(x for x in range(3) if x != first_choice and x != monty_choice)
 
         # switch strategy
-        if switch == True:
-            switch_games += 1
-            switch_choice = next(x for x in range(3) if x != first_choice and x != monty_choice)
+        #if switch == True:
+        #    switch_games += 1
 
-            if doors[switch_choice] == 1:
-                carCount_switch += 1
+        if doors[switch_choice] == 1:
+             carCount_switch += 1
 
         # stay strategy
-        if stay == True:
-            stay_games += 1
-            if doors[first_choice] == 1:
-                carCount_stay += 1
+       # if stay == True:
+        #    stay_games += 1
+        #    if doors[first_choice] == 1:
+        #        carCount_stay += 1
 
 
     
-    switch_win_probability = (carCount_switch / switch_games) * 100
-    stay_win_probability = (carCount_stay / stay_games) * 100
+    switch_win_probability = (carCount_switch / games) * 100
+    stay_win_probability = (carCount_stay / games) * 100
 
 
     
@@ -258,6 +257,6 @@ monty_game_PART_TWO(games,default_bool, default_bool)
 
 monty_game_PART_THREE(games,default_bool, default_bool)
 
-monty_game_PART_FOUR(games, default_bool, default_bool)
+monty_game_PART_FOUR(games)
 
 
