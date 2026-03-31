@@ -183,6 +183,7 @@ def monty_game_PART_FOUR(games):
     carCount_switch = 0
     #stay_games = 0
     #switch_games = 0
+    spoiled_games = 0
 
     for i in range(games):
         doors = [0, 0, 0]
@@ -201,6 +202,11 @@ def monty_game_PART_FOUR(games):
             possible_open = [x for x in range(3) if x != first_choice]
             monty_choice = rand.choice(possible_open)
 
+        # if host reveals the car, the round is spoiled
+            if doors[monty_choice] == 1:
+                spoiled_games += 1
+                continue
+
             # if the host reveals the car, that round is spoiled
             # we skip it because the normal stay/switch decision no longer happens
             #if doors[monty_choice] == 1:
@@ -209,24 +215,34 @@ def monty_game_PART_FOUR(games):
         
         else:
             # normal Monty behavior (open always goat door)
-            
             monty_open = [x for x in range(3) if x != first_choice and doors[x] == 0]
             monty_choice = rand.choice(monty_open)
 
         if doors[first_choice] == 1:  # stay
             carCount_stay += 1
 
-        if doors[monty_choice] == 1: #switch 
-            continue
-
+       # if doors[monty_choice] == 1: #switch 
+          #  continue
+       
+        # switch strategy: switch to the only other unopened door
         switch_choice = next(x for x in range(3) if x != first_choice and x != monty_choice)
+        if doors[switch_choice] == 1:
+            carCount_switch += 1
+
+    valid_games = games - spoiled_games
+
+     if valid_games == 0:
+        print("No valid games were completed.")
+        return
+
+       # switch_choice = next(x for x in range(3) if x != first_choice and x != monty_choice)
 
         # switch strategy
         #if switch == True:
         #    switch_games += 1
 
-        if doors[switch_choice] == 1:
-             carCount_switch += 1
+       # if doors[switch_choice] == 1:
+       #      carCount_switch += 1
 
         # stay strategy
        # if stay == True:
